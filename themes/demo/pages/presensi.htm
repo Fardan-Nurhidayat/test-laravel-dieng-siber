@@ -1,0 +1,61 @@
+title = "Presensi"
+url = "/presensi"
+layout = "default"
+is_hidden = 0
+
+[presensi]
+==
+<section class="container" style="max-width:900px;margin:40px auto;">
+  <div style="display:flex;justify-content:space-between;align-items:center;">
+    <h2>Halo, {{ presensi.employee.name }}</h2>
+    <form data-request="presensi::onLogout">
+      <button type="submit">Logout</button>
+    </form>
+  </div>
+  <div style="margin:20px 0;padding:16px;border:1px solid #ddd;border-radius:8px;">
+    <p>Tanggal: {{ presensi.todayAttendance.date|date('d M Y') }}</p>
+    <p>Masuk: {{ presensi.todayAttendance.clock_in_at ? presensi.todayAttendance.clock_in_at|date('H:i') : '-' }}</p>
+    <p>Pulang: {{ presensi.todayAttendance.clock_out_at ? presensi.todayAttendance.clock_out_at|date('H:i') : '-' }}</p>
+
+    {% if not presensi.todayAttendance.clock_in_at %}
+    <form data-request="presensi::onClockIn" style="margin-top:10px;">
+      <input type="text" name="note" placeholder="Catatan (opsional)">
+      <button type="submit">Presensi Masuk</button>
+    </form>
+    {% elseif not presensi.todayAttendance.clock_out_at %}
+    <form data-request="presensi::onClockOut" style="margin-top:10px;">
+      <input type="text" name="note" placeholder="Catatan (opsional)">
+      <button type="submit">Presensi Pulang</button>
+    </form>
+    {% else %}
+    <p style="color:green;">Presensi hari ini selesai.</p>
+    {% endif %}
+  </div>
+
+  <h3>Riwayat Presensi</h3>
+  <table border="1" cellpadding="8" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <th>Tanggal</th>
+        <th>Masuk</th>
+        <th>Pulang</th>
+        <th>Catatan Masuk</th>
+        <th>Catatan Pulang</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in presensi.history %}
+      <tr>
+        <td>{{ row.date|date('d M Y') }}</td>
+        <td>{{ row.clock_in_at ? row.clock_in_at|date('H:i') : '-' }}</td>
+        <td>{{ row.clock_out_at ? row.clock_out_at|date('H:i') : '-' }}</td>
+        <td>{{ row.clock_in_note ?: '-' }}</td>
+        <td>{{ row.clock_out_note ?: '-' }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5">Belum ada data.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+

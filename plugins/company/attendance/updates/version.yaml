@@ -1,0 +1,4 @@
+1.0.0:
+    - First version of Attendance plugin
+    - create_employees_table.php
+    - create_attendances_table.php

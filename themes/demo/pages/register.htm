@@ -1,0 +1,30 @@
+title = "Register"
+url = "/register"
+layout = "default"
+is_hidden = 0
+
+[register]
+==
+<section class="container" style="max-width:600px;margin:40px auto;">
+  <h2>Register Pegawai</h2>
+  <form data-request="register::onRegister">
+    <div>
+      <label>Nama</label>
+      <input type="text" name="name" required>
+    </div>
+    <div>
+      <label>Email</label>
+      <input type="email" name="email" required>
+    </div>
+    <div>
+      <label>Password</label>
+      <input type="password" name="password" required>
+    </div>
+    <div>
+      <label>Konfirmasi Password</label>
+      <input type="password" name="password_confirmation" required>
+    </div>
+    <button type="submit">Daftar</button>
+    <p>Sudah punya akun? <a href="/login">Login</a></p>
+  </form>
+</section>
